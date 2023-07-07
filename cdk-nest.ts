@@ -19,11 +19,11 @@ class ServerStack extends Stack {
         functionName: 'expressServerHandler',
         handler: 'handler',
         environment: {
-          PGDATABASE: process.env.PGDATABASE!,
-          PGHOST: process.env.PGHOST!,
-          PGPORT: process.env.PGPORT!,
-          PGUSER: process.env.PGUSER!,
-          PGPASSWORD: process.env.PGPASSWORD!
+          PGDATABASE: process.env.DATABASE!,
+          PGHOST: process.env.HOST!,
+          PGPORT: process.env.PORT!,
+          PGUSER: process.env.USER!,
+          PGPASSWORD: process.env.PASSWORD!
         }
       }
     );
