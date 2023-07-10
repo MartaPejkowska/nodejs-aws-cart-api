@@ -17,7 +17,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fe5437fab2ee40af02c41b725220ef09814083be202ab4c0a8239fa5a02a877e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d07446b21eab49c6c971b8b204a72348c02252746ec1174ce778954c34486115.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -43,6 +43,36 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "nodejscartapiexpressserverlambdaB97CA2D2"
+          }
+        ],
+        "/nodejs-cart-api-stack/nodejs-carts-api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "nodejscartsapi8073F737"
+          }
+        ],
+        "/nodejs-cart-api-stack/nodejs-carts-api/DefaultStage/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "nodejscartsapiDefaultStageDAE75F12"
+          }
+        ],
+        "/nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "nodejscartsapiANYproxyexpressHandlerintegrationE8A05FD4"
+          }
+        ],
+        "/nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "nodejscartsapiANYproxyexpressHandlerintegrationPermission631BF462"
+          }
+        ],
+        "/nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "nodejscartsapiANYproxy928A6467"
           }
         ],
         "/nodejs-cart-api-stack/CDKMetadata/Default": [

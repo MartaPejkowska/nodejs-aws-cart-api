@@ -105,7 +105,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                       },
-                      "s3Key": "eb2021fc773adb16893eb5166005915e78c6f4afa0f4a8f4f3b0494713ab16f1.zip"
+                      "s3Key": "a56cacb4f923cd19ffd6523a6be3c03b02dc6df4d3b363b91032b6fac61b8612.zip"
                     },
                     "role": {
                       "Fn::GetAtt": [
@@ -115,16 +115,15 @@
                     },
                     "environment": {
                       "variables": {
-                        "PGDATABASE": "database-task8,",
-                        "PGHOST": "database-task8.cyz5zmmw9d9n.eu-west-1.rds.amazonaws.com,",
-                        "PGPORT": "5432,",
-                        "PGUSER": "postgres,",
-                        "PGPASSWORD": "Chromole1,",
+                        "HOST": "database-task8.cyz5zmmw9d9n.eu-west-1.rds.amazonaws.com",
+                        "PORT": "5432",
+                        "USER": "postgres",
+                        "PASSWORD": "Chromole1",
                         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
                       }
                     },
                     "functionName": "expressServerHandler",
-                    "handler": "index.handler",
+                    "handler": "index.lambda",
                     "runtime": "nodejs18.x"
                   }
                 },
@@ -137,6 +136,188 @@
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda_nodejs.NodejsFunction",
               "version": "2.87.0"
+            }
+          },
+          "nodejs-carts-api": {
+            "id": "nodejs-carts-api",
+            "path": "nodejs-cart-api-stack/nodejs-carts-api",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "nodejs-cart-api-stack/nodejs-carts-api/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Api",
+                  "aws:cdk:cloudformation:props": {
+                    "corsConfiguration": {
+                      "allowHeaders": [
+                        "*"
+                      ],
+                      "allowMethods": [
+                        "*"
+                      ],
+                      "allowOrigins": [
+                        "*"
+                      ]
+                    },
+                    "name": "nodejs-carts-api",
+                    "protocolType": "HTTP"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnApi",
+                  "version": "2.87.0"
+                }
+              },
+              "DefaultStage": {
+                "id": "DefaultStage",
+                "path": "nodejs-cart-api-stack/nodejs-carts-api/DefaultStage",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "nodejs-cart-api-stack/nodejs-carts-api/DefaultStage/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "apiId": {
+                          "Ref": "nodejscartsapi8073F737"
+                        },
+                        "stageName": "$default",
+                        "autoDeploy": true
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnStage",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-apigatewayv2-alpha.HttpStage",
+                  "version": "2.87.0-alpha.0"
+                }
+              },
+              "ANY--{proxy+}": {
+                "id": "ANY--{proxy+}",
+                "path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}",
+                "children": {
+                  "expressHandler-integration": {
+                    "id": "expressHandler-integration",
+                    "path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Integration",
+                          "aws:cdk:cloudformation:props": {
+                            "apiId": {
+                              "Ref": "nodejscartsapi8073F737"
+                            },
+                            "integrationType": "AWS_PROXY",
+                            "integrationUri": {
+                              "Fn::GetAtt": [
+                                "nodejscartapiexpressserverlambdaB97CA2D2",
+                                "Arn"
+                              ]
+                            },
+                            "payloadFormatVersion": "2.0"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnIntegration",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-apigatewayv2-alpha.HttpIntegration",
+                      "version": "2.87.0-alpha.0"
+                    }
+                  },
+                  "expressHandler-integration-Permission": {
+                    "id": "expressHandler-integration-Permission",
+                    "path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration-Permission",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                      "aws:cdk:cloudformation:props": {
+                        "action": "lambda:InvokeFunction",
+                        "functionName": {
+                          "Fn::GetAtt": [
+                            "nodejscartapiexpressserverlambdaB97CA2D2",
+                            "Arn"
+                          ]
+                        },
+                        "principal": "apigateway.amazonaws.com",
+                        "sourceArn": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "arn:",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              ":execute-api:",
+                              {
+                                "Ref": "AWS::Region"
+                              },
+                              ":",
+                              {
+                                "Ref": "AWS::AccountId"
+                              },
+                              ":",
+                              {
+                                "Ref": "nodejscartsapi8073F737"
+                              },
+                              "/*/*/{proxy+}"
+                            ]
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGatewayV2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "apiId": {
+                          "Ref": "nodejscartsapi8073F737"
+                        },
+                        "routeKey": "ANY /{proxy+}",
+                        "authorizationType": "NONE",
+                        "target": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "integrations/",
+                              {
+                                "Ref": "nodejscartsapiANYproxyexpressHandlerintegrationE8A05FD4"
+                              }
+                            ]
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigatewayv2.CfnRoute",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-apigatewayv2-alpha.HttpRoute",
+                  "version": "2.87.0-alpha.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-apigatewayv2-alpha.HttpApi",
+              "version": "2.87.0-alpha.0"
             }
           },
           "CDKMetadata": {

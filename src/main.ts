@@ -9,15 +9,18 @@ async function bootstrap(): Promise<Handler> {
   const app = await NestFactory.create(AppModule);
   await app.init();
 
+  app.enableCors()
+
   const expressApp = app.getHttpAdapter().getInstance();
   return serverlessExpress({ app: expressApp });
 }
 
-export const handler: Handler = async (
+export const lambda: Handler = async (
   event: any,
   context: Context,
   callback: Callback,
 ) => {
   server = server ?? (await bootstrap());
+  console.log('server',server(event,context,callback))
   return server(event, context, callback);
 };

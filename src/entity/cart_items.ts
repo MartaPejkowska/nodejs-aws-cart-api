@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne} from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn} from "typeorm";
 import { Carts } from "./cart";
 
 export enum status {
@@ -8,7 +8,7 @@ export enum status {
 
 @Entity()
 export class CartItems {
-  @Column({ type: 'uuid', nullable: false })
+  @PrimaryColumn({ type: 'uuid', nullable: false })
   cart_id: string;
 
   @Column({ type: 'uuid', nullable: false })

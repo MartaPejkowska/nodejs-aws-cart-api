@@ -41,7 +41,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "eb2021fc773adb16893eb5166005915e78c6f4afa0f4a8f4f3b0494713ab16f1.zip"
+     "S3Key": "a56cacb4f923cd19ffd6523a6be3c03b02dc6df4d3b363b91032b6fac61b8612.zip"
     },
     "Role": {
      "Fn::GetAtt": [
@@ -51,16 +51,15 @@
     },
     "Environment": {
      "Variables": {
-      "PGDATABASE": "database-task8,",
-      "PGHOST": "database-task8.cyz5zmmw9d9n.eu-west-1.rds.amazonaws.com,",
-      "PGPORT": "5432,",
-      "PGUSER": "postgres,",
-      "PGPASSWORD": "Chromole1,",
+      "HOST": "database-task8.cyz5zmmw9d9n.eu-west-1.rds.amazonaws.com",
+      "PORT": "5432",
+      "USER": "postgres",
+      "PASSWORD": "Chromole1",
       "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
      }
     },
     "FunctionName": "expressServerHandler",
-    "Handler": "index.handler",
+    "Handler": "index.lambda",
     "Runtime": "nodejs18.x"
    },
    "DependsOn": [
@@ -68,15 +67,132 @@
    ],
    "Metadata": {
     "aws:cdk:path": "nodejs-cart-api-stack/nodejs-cart-api-express-server-lambda/Resource",
-    "aws:asset:path": "asset.eb2021fc773adb16893eb5166005915e78c6f4afa0f4a8f4f3b0494713ab16f1",
+    "aws:asset:path": "asset.a56cacb4f923cd19ffd6523a6be3c03b02dc6df4d3b363b91032b6fac61b8612",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
+   }
+  },
+  "nodejscartsapi8073F737": {
+   "Type": "AWS::ApiGatewayV2::Api",
+   "Properties": {
+    "CorsConfiguration": {
+     "AllowHeaders": [
+      "*"
+     ],
+     "AllowMethods": [
+      "*"
+     ],
+     "AllowOrigins": [
+      "*"
+     ]
+    },
+    "Name": "nodejs-carts-api",
+    "ProtocolType": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "nodejs-cart-api-stack/nodejs-carts-api/Resource"
+   }
+  },
+  "nodejscartsapiDefaultStageDAE75F12": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "ApiId": {
+     "Ref": "nodejscartsapi8073F737"
+    },
+    "StageName": "$default",
+    "AutoDeploy": true
+   },
+   "Metadata": {
+    "aws:cdk:path": "nodejs-cart-api-stack/nodejs-carts-api/DefaultStage/Resource"
+   }
+  },
+  "nodejscartsapiANYproxyexpressHandlerintegrationE8A05FD4": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "nodejscartsapi8073F737"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "nodejscartapiexpressserverlambdaB97CA2D2",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration/Resource"
+   }
+  },
+  "nodejscartsapiANYproxyexpressHandlerintegrationPermission631BF462": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "nodejscartapiexpressserverlambdaB97CA2D2",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "nodejscartsapi8073F737"
+       },
+       "/*/*/{proxy+}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/expressHandler-integration-Permission"
+   }
+  },
+  "nodejscartsapiANYproxy928A6467": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "nodejscartsapi8073F737"
+    },
+    "RouteKey": "ANY /{proxy+}",
+    "AuthorizationType": "NONE",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "nodejscartsapiANYproxyexpressHandlerintegrationE8A05FD4"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "nodejs-cart-api-stack/nodejs-carts-api/ANY--{proxy+}/Resource"
    }
   },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWOSw6DMAxEz9J9cEsrtWwLEssu6AFQSFxkPo6Ek3aBuHsDiNXzZzyeK2QPuJz0TxJj+2SgBua316ZXcVTPgx4bq2t2FjuB14YysPHkWJEeYa7cgKr48MpFya3WIugFnitiD3kwPfpcC6rdDaL68FhUheLCZFBtB/F1S9xuhsci1oVjS7t+jQKdnL9pBuk9Ru+EKJkCexoRqp1/xdeWFNYAAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/01Qy27CMBD8Fu7OEqjUciwgVe2lqtIPiBZnGzYPO8o6oMrKv9d2oOI0s+vxzNhb2L2Az1d4lUxXbdbxCfy3Q92qsCp9h/2pwtLYihqBzwRvk9GOrVGMPfjCdqSOPybirOSpRBFyAvsIYYbDpFtyBxRSixv4IP83CfyLxp5FwjQrHLhGR1f8vWyTcD9w1IROdcr5MI7qEe93Czs5mmdVkNhp1KRSblSzqZPgfhD40ZqKXcrJM+yGM0K+er29fR3xMf6m8O/ODbFFxKVGZCk4sYdGoUj8KmhkfdnsYPMc/BthzsbJOO4JigX/AOvSnV93AQAA"
    },
    "Metadata": {
     "aws:cdk:path": "nodejs-cart-api-stack/CDKMetadata/Default"

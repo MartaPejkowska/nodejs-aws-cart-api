@@ -4,6 +4,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { Carts} from "./entity/cart";
 import { CartItems } from "./entity/cart_items";
+import { Orders } from './entity/orders';
+import { Users } from './entity/users';
+
 
 @Module({
     imports:[
@@ -11,15 +14,15 @@ import { CartItems } from "./entity/cart_items";
             type: "postgres",
             host: process.env.HOST,
             port: +process.env.PORT,
-            username: process.env.USER,
+            username: process.env.USERNAME,
             password: process.env.PASSWORD,
-            database: process.env.DATABASE,
+            // database: process.env.DATABASE,
             synchronize: true,
             logging: true,
-            entities: [Carts,CartItems],
+            entities: [Carts,CartItems, Orders, Users],
             namingStrategy: new SnakeNamingStrategy(),
     }),
-    TypeOrmModule.forFeature([Carts, CartItems]),
+    TypeOrmModule.forFeature([Carts, CartItems, Orders, Users]),
   ],
   exports: [TypeOrmModule],
 })

@@ -20,7 +20,6 @@
     @OneToMany(
       () => Orders,
       order => order.user,
-      { cascade: true },
     )
     order:Orders
 

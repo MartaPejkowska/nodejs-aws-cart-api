@@ -18,14 +18,19 @@ export class Orders {
   @Column({ type: 'uuid', nullable: false })
   cart_id: string;
 
-  @Column()
-  payment:JSON
+  @Column(("simple-json"))
+  payment:{type: string,
+    address?: any,
+    creditCard?: any}
+
+  @Column(("simple-json"))
+  delivery:{
+    type: string,
+    address: any,
+  }
 
   @Column()
-  delivery:JSON
-
-  @Column()
-  comments: Text
+  comments: string
 
   @Column()
   status:status
