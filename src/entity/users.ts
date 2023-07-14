@@ -1,27 +1,16 @@
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
-  import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from "typeorm";
-   import { Orders } from "./orders";
+@Entity({ name: 'users' })
+export class Users {
+  @PrimaryColumn({ type: 'uuid' })
+  id: string;
 
-  @Entity()
-  export class Users {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @Column({ name: 'name', type: 'varchar', nullable: true })
+  name: string;
 
-    @Column({ type: 'uuid', nullable: false })
-    name:string
+  @Column({ name: 'email', type: 'varchar', nullable: true })
+  email: string;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    email:string
-
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    password:string
-
-
-    @OneToMany(
-      () => Orders,
-      order => order.user,
-    )
-    order:Orders
-
-
-  }
+  @Column({ name: 'password', type: 'varchar', nullable: true })
+  password: string;
+}

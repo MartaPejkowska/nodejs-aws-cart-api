@@ -17,28 +17,32 @@ export class CartController {
   // @UseGuards(JwtAuthGuard)
   // @UseGuards(BasicAuthGuard)
   @Get()
-  findUserCart(@Req() req: AppRequest) {
-    const cart = this.cartService.findOrCreateByUserId(getUserIdFromRequest(req));
+  async findUserCart(@Req() req: AppRequest) {
+    const { cart, items } = await this.cartService.findOrCreateByUserId(
+      getUserIdFromRequest(req),
+    );
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      data: { cart, total: calculateCartTotal(cart) },
+      data: { cart, total: calculateCartTotal(items) },
     }
   }
 
   // @UseGuards(JwtAuthGuard)
   // @UseGuards(BasicAuthGuard)
   @Put()
-  updateUserCart(@Req() req: AppRequest, @Body() body) { // TODO: validate body payload...
-    const cart = this.cartService.updateByUserId(getUserIdFromRequest(req), body)
-
+  async updateUserCart(@Req() req: AppRequest, @Body() body) { // TODO: validate body payload...
+    const { cart, items } = await this.cartService.updateByUserId(
+      getUserIdFromRequest(req),
+      body,
+    );
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
       data: {
         cart,
-        total: calculateCartTotal(cart),
+        total: calculateCartTotal(items),
       }
     }
   }
@@ -58,11 +62,12 @@ export class CartController {
   // @UseGuards(JwtAuthGuard)
   // @UseGuards(BasicAuthGuard)
   @Post('checkout')
-  checkout(@Req() req: AppRequest, @Body() body) {
+  async checkout(@Req() req: AppRequest, @Body() body) {
     const userId = getUserIdFromRequest(req);
-    const cart = this.cartService.findByUserId(userId);
+    //@ts-ignore
+    const { cart, items } = await this.cartService.findByUserId(userId);
 
-    if (!(cart && cart.items.length)) {
+    if (!cart) {
       const statusCode = HttpStatus.BAD_REQUEST;
       req.statusCode = statusCode
 
@@ -71,13 +76,13 @@ export class CartController {
         message: 'Cart is empty',
       }
     }
-
-    const { id: cartId, items } = cart;
-    const total = calculateCartTotal(cart);
+//@ts-ignore
+    // const { id: cartId, items } = cart;
+    const total = calculateCartTotal(items);
     const order = this.orderService.create({
       ...body, // TODO: validate and pick only necessary data
       userId,
-      cartId,
+      cartId: cart.id,
       items,
       total,
     });

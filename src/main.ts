@@ -20,7 +20,7 @@ export const lambda: Handler = async (
   context: Context,
   callback: Callback,
 ) => {
+  console.log('no elo')
   server = server ?? (await bootstrap());
-  console.log('server',server(event,context,callback))
   return server(event, context, callback);
 };

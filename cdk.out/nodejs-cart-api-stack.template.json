@@ -41,7 +41,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "a56cacb4f923cd19ffd6523a6be3c03b02dc6df4d3b363b91032b6fac61b8612.zip"
+     "S3Key": "ec8825cac01267812642c532d906c491ccf0c8c2f5ea374cbfa4be09609bb45c.zip"
     },
     "Role": {
      "Fn::GetAtt": [
@@ -51,6 +51,7 @@
     },
     "Environment": {
      "Variables": {
+      "DATABASE": "",
       "HOST": "database-task8.cyz5zmmw9d9n.eu-west-1.rds.amazonaws.com",
       "PORT": "5432",
       "USER": "postgres",
@@ -67,7 +68,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "nodejs-cart-api-stack/nodejs-cart-api-express-server-lambda/Resource",
-    "aws:asset:path": "asset.a56cacb4f923cd19ffd6523a6be3c03b02dc6df4d3b363b91032b6fac61b8612",
+    "aws:asset:path": "asset.ec8825cac01267812642c532d906c491ccf0c8c2f5ea374cbfa4be09609bb45c",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

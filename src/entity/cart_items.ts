@@ -1,5 +1,6 @@
-import { Entity, Column, ManyToOne, PrimaryColumn} from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryColumn,JoinColumn} from "typeorm";
 import { Carts } from "./cart";
+import {Product} from '../entity/product'
 
 export enum status {
     OPEN = 'OPEN',
@@ -23,5 +24,9 @@ export class CartItems {
     { orphanedRowAction: 'delete', onDelete: 'CASCADE' },
   )
   carts:Carts
+
+  @ManyToOne(() => Product, (product) => product.id)
+  @JoinColumn({ name: 'product_id' })
+  product: Product;
 
 }

@@ -9,6 +9,7 @@ import {
   HttpMethod,
 } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import * as apiGateway from 'aws-cdk-lib/aws-apigateway';
 
 
 envConfig();
@@ -51,6 +52,10 @@ class ServerStack extends Stack {
       path: '/{proxy+}',
       methods: [HttpMethod.ANY]
     });
+
+    // const api = new apiGateway.LambdaRestApi(this, 'NestApiGateway', {
+    //   handler: expressServerHandler ,
+    // });
   }
 
   }

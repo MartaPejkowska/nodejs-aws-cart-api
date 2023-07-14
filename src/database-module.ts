@@ -6,6 +6,7 @@ import { Carts} from "./entity/cart";
 import { CartItems } from "./entity/cart_items";
 import { Orders } from './entity/orders';
 import { Users } from './entity/users';
+import { Product } from './entity/product';
 
 
 @Module({
@@ -16,13 +17,13 @@ import { Users } from './entity/users';
             port: +process.env.PORT,
             username: process.env.USERNAME,
             password: process.env.PASSWORD,
-            // database: process.env.DATABASE,
+            database: process.env.DATABASE,
             synchronize: true,
             logging: true,
-            entities: [Carts,CartItems, Orders, Users],
+            entities: [Carts,CartItems, Orders, Users, Product],
             namingStrategy: new SnakeNamingStrategy(),
     }),
-    TypeOrmModule.forFeature([Carts, CartItems, Orders, Users]),
+    TypeOrmModule.forFeature([Carts, CartItems, Orders, Users, Product]),
   ],
   exports: [TypeOrmModule],
 })

@@ -39,12 +39,12 @@ export class Orders {
   total: number
 
 
-  @ManyToOne(
-    () => Users,
-    user => user.order,
-    { cascade: true },
-  )
-  user:Users
+  // @ManyToOne(
+  //   () => Users,
+  //   user => user.order,
+  //   { cascade: true },
+  // )
+  // user:Users
 
   @OneToOne(
    ()=> Carts, cart=>cart.orders
